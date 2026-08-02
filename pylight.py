@@ -99,9 +99,12 @@ class main:
                    text = await response.text(errors="ignore")
                    e_string = sites["e_string"]
                    category = sites["cat"]
+                   name = sites["name"]
+                   filter = name.replace("(", "")
+                   pretty_name = filter.replace(")", "")
                    if e_string and e_string in text:
                     display_url = urls.replace(username, f"\033[1;37m{username}\033[1;30m")
-                    print(f"\033[1;36m[{category}]\033[0m \033[38;5;208m{display_url}\033[0m")
+                    print(f"(\033[38;5;210m{pretty_name}\033[0m) [\033[38;2;0;199;124m{category}\033[0m] \033[38;5;183m{display_url}\033[0m")
                     found_urls.append(urls)
               except Exception:
                pass
