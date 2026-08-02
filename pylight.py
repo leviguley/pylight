@@ -88,11 +88,12 @@ class main:
         sem = asyncio.Semaphore(limit)
         connecting_specs = aiohttp.TCPConnector(limit=limit, ssl=False)
         timeout = aiohttp.ClientTimeout(total=timeout_seconds)
-        async with aiohttp.ClientSession(connector=connecting_specs, timeout=timeout, headers={"User-Agent": random_Agent}) as new_session:   
-        
+        async with aiohttp.ClientSession(connector=connecting_specs, timeout=timeout, headers={"User-Agent": random_Agent}) as new_session:  
+          
+         found_urls = []
          async def search(sites):
           urls = sites["uri_check"].replace("{account}", username)
-
+          found_urls = []
           async with sem:
               try:
                   async with new_session.get(urls, allow_redirects=True) as response:
@@ -101,11 +102,16 @@ class main:
                    category = sites["cat"]
                    if e_string and e_string in text:
                     print(f"\033[1;36m[{category}]\033[0m \033[38;5;208m{urls}\033[0m")
+                    found_urls.append(urls)
               except Exception:
                pass
            
          tasks = [search(sites) for sites in self.urls]
          await asyncio.gather(*tasks)
+         if not found_urls:
+           print("\n[\033[44mNo Links Found\033[0m]")
+    
+         
 
              
     def check(self, username, timeout, limit):
