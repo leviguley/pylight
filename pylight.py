@@ -119,7 +119,7 @@ class main:
 if __name__ == "__main__":    
  parser = argparse.ArgumentParser(description="Pylight is the Fastest 100% Accurate Username Checker. writtin in python. i Didn't add in file save because it doesn't show color but if you wanna save do > anyname.txt & it will show color")    
  parser.add_argument("-u", "--username", required=True, help="Username")   
- parser.add_argument("-t", "--timeout", type=int, help="Timeout", default=5) 
+ parser.add_argument("-t", "--timeout", type=int, help="Timeout", default=10) 
  parser.add_argument("-l", "--limit", type=int, help="Request Limit", default=200)
  args = parser.parse_args()
 
