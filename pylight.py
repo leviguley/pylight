@@ -95,7 +95,7 @@ class main:
           urls = sites["uri_check"].replace("{account}", username) 
           async with sem:
               try:
-                  async with new_session.get(urls, allow_redirects=True) as response:
+                  async with new_session.get(urls) as response:
                    text = await response.text(errors="ignore")
                    e_string = sites["e_string"]
                    category = sites["cat"]
