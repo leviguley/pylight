@@ -1165,19 +1165,6 @@
       "cat": "tech"
     },
     {
-      "name": "Choko.Link",
-      "uri_check": "https://choko.link/{account}",
-      "e_code": 200,
-      "e_string": "--title-font-family: Roboto;",
-      "m_string": "The link might be incorrect or the profile has been deleted.",
-      "m_code": 404,
-      "known": [
-        "ForgedSteelTools",
-        "eugeniapsychology"
-      ],
-      "cat": "social"
-    },
-    {
       "name": "Chomikuj.pl",
       "uri_check": "https://chomikuj.pl/{account}/",
       "e_code": 200,
