@@ -11,5 +11,5 @@ pip install -r install.txt
 ```
 
 ```
-python3 -u leviguley -t 5 -u 200
+python3 -u leviguley -t 5 -l 200
 ```
