@@ -1,3 +1,5 @@
+![screenshot](pylight.png)
+
 ```
 git clone https://github.com/leviguley/pylight
 ```
