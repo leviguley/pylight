@@ -1,5 +1,7 @@
 {
   "license": [
+    "this is edited so i could remove the false positives",
+    "Original Link https://github.com/WebBreacher/WhatsMyName/blob/main/wmn-data.json",
     "Copyright (C) Micah Hoffman",
     "This work is licensed under the Creative Commons Attribution-ShareAlike",
     "4.0 International License. To view a copy of this license, visit",
