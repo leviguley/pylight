@@ -93,7 +93,6 @@ class main:
          found_urls = []
          async def search(sites):
           urls = sites["uri_check"].replace("{account}", username)
-          found_urls = []
           async with sem:
               try:
                   async with new_session.get(urls, allow_redirects=True) as response:
@@ -110,9 +109,6 @@ class main:
          await asyncio.gather(*tasks)
          if not found_urls:
            print("\n[\033[44mNo Links Found\033[0m]")
-    
-         
-
              
     def check(self, username, timeout, limit):
        if len(self.urls) > 0:
