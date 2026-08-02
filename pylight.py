@@ -108,6 +108,8 @@ class main:
            
          tasks = [search(sites) for sites in self.urls]
          await asyncio.gather(*tasks)
+         if not found_urls:
+           print("\n[\033[48;5;30mUser Not Found On AnyWebsite\033[0m]")
              
     def check(self, username, timeout, limit):
        if len(self.urls) > 0:
