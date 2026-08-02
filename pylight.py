@@ -121,7 +121,7 @@ if __name__ == "__main__":
  parser.add_argument("-l", "--limit", type=int, help="Request Limit", default=200)
  args = parser.parse_args()
 
- l = main("[\033[0;34mINF\033[0m] by @leviguley " 
+ l = main("[\033[0;34mINF\033[0m] Instagram @leviguley " 
  "\n[\033[1;32mVERSION\033[0m] 0.1\n")
  l.vers()
  try:
