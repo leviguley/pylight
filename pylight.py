@@ -92,7 +92,7 @@ class main:
           
          found_urls = []
          async def search(sites):
-          urls = sites["uri_check"].replace("{account}", username)
+          urls = sites["uri_check"].replace("{account}", username) 
           async with sem:
               try:
                   async with new_session.get(urls, allow_redirects=True) as response:
@@ -100,15 +100,14 @@ class main:
                    e_string = sites["e_string"]
                    category = sites["cat"]
                    if e_string and e_string in text:
-                    print(f"\033[1;36m[{category}]\033[0m \033[38;5;208m{urls}\033[0m")
+                    display_url = urls.replace(username, f"\033[1;37m{username}\033[1;30m")
+                    print(f"\033[1;36m[{category}]\033[0m \033[38;5;208m{display_url}\033[0m")
                     found_urls.append(urls)
               except Exception:
                pass
            
          tasks = [search(sites) for sites in self.urls]
          await asyncio.gather(*tasks)
-         if not found_urls:
-           print("\n[\033[44mNo Links Found\033[0m]")
              
     def check(self, username, timeout, limit):
        if len(self.urls) > 0:
@@ -116,7 +115,7 @@ class main:
 
 
 if __name__ == "__main__":    
- parser = argparse.ArgumentParser(description="Pylight is the Fastest 100% Accurate Username Checker. writtin in python")    
+ parser = argparse.ArgumentParser(description="Pylight is the Fastest 100% Accurate Username Checker. writtin in python. i Didn't add in file save because it doesn't show color but if you wanna save do > anyname.txt & it will show color")    
  parser.add_argument("-u", "--username", required=True, help="Username")   
  parser.add_argument("-t", "--timeout", type=int, help="Timeout", default=5) 
  parser.add_argument("-l", "--limit", type=int, help="Request Limit", default=200)
@@ -127,6 +126,6 @@ if __name__ == "__main__":
  l.vers()
  try:
   asyncio.run(l.websites())
-  l.check(args.username, args.timeout, args.limit)
+  l.check(args.username, args.timeout, args.limit, args.savefile)
  except:
    print("Goodbye!")
