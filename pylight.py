@@ -126,6 +126,6 @@ if __name__ == "__main__":
  l.vers()
  try:
   asyncio.run(l.websites())
-  l.check(args.username, args.timeout, args.limit, args.savefile)
+  l.check(args.username, args.timeout, args.limit)
  except:
    print("Goodbye!")
