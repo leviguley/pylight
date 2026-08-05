@@ -85,7 +85,6 @@ class main:
             
     async def setup(self, random_Agent, username, timeout_seconds, limit):
         print(f"[\033[48;5;218m\033[30m{random_Agent}\033[0m]")
-        sem = asyncio.Semaphore(limit)
         connecting_specs = aiohttp.TCPConnector(limit=limit, ssl=False)
         timeout = aiohttp.ClientTimeout(total=timeout_seconds)
         async with aiohttp.ClientSession(connector=connecting_specs, timeout=timeout, headers={"User-Agent": random_Agent}) as new_session:  
@@ -93,8 +92,7 @@ class main:
          found_urls = []
          async def search(sites):
           urls = sites["uri_check"].replace("{account}", username) 
-          async with sem:
-              try:
+          try:
                   async with new_session.get(urls) as response:
                    text = await response.text(errors="ignore")
                    e_string = sites["e_string"]
@@ -106,7 +104,7 @@ class main:
                     display_url = urls.replace(username, f"\033[1;37m{username}\033[1;30m")
                     print(f"(\033[38;5;210m{pretty_name}\033[0m) [\033[38;2;0;199;124m{category}\033[0m] \033[38;5;183m{display_url}\033[0m")
                     found_urls.append(urls)
-              except Exception:
+          except Exception:
                pass
            
          tasks = [search(sites) for sites in self.urls]
