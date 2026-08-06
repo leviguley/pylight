@@ -17,5 +17,5 @@ python3 pylight.py -h
 ```
 
 ```
-python3 pylight.py -u anyname -t 10 -l 200
+python3 pylight.py -u anyname
 ```
