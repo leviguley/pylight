@@ -59,16 +59,6 @@ USER_AGENTS = [
         "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.13 (KHTML, like Gecko) Chrome/24.0.1290.1 Safari/537.13"
     ]
 
-class GoogleDork:
-   def __init__(self):
-      pass
-
-   def __enter__(self):
-      pass
-
-   def __exit__(self, exc_type, exc, tb):
-      pass
-
 class main:
     def __init__(self, version) -> str:
         self.version = version
