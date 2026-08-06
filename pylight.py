@@ -102,7 +102,7 @@ class main:
                    pretty_name = filter.replace(")", "")
                    filter_twitter = urls.replace("https://api.x.com/i/users/username_available.json?username=", "https://x.com/")
                    filter_tiktok = filter_twitter.replace("https://www.tiktok.com/oembed?url=https://www.tiktok.com/", "https://tiktok.com/")
-                   filter_chess = filter_tiktok.replace("https://api.chess.com/pub/player/", "https://www.chess.com/players/")
+                   filter_chess = filter_tiktok.replace("https://api.chess.com/pub/player/", "https://www.chess.com/members/")
                    filter_roblox = filter_chess.replace(f"https://auth.roblox.com/v1/usernames/validate?username={username}&birthday=2019-12-31T23:00:00.000Z", f"https://www.roblox.com/search/users?keyword={username} \033[0m<[ \033[38;5;178mUsername Name Exist Or Account Deletion\033[0m ]>")
                    if e_string and e_string in text:
                     display_url = filter_roblox.replace(username, f"\033[1;37m{username}\033[38;5;30m")
