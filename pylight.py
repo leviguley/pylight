@@ -59,6 +59,16 @@ USER_AGENTS = [
         "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.13 (KHTML, like Gecko) Chrome/24.0.1290.1 Safari/537.13"
     ]
 
+class GoogleDork:
+   def __init__(self):
+      pass
+
+   def __enter__(self):
+      pass
+
+   def __exit__(self, exc_type, exc, tb):
+      pass
+
 class main:
     def __init__(self, version) -> str:
         self.version = version
@@ -100,8 +110,12 @@ class main:
                    name = sites["name"]
                    filter = name.replace("(", "")
                    pretty_name = filter.replace(")", "")
+                   filter_twitter = urls.replace("https://api.x.com/i/users/username_available.json?username=", "https://x.com/")
+                   filter_tiktok = filter_twitter.replace("https://www.tiktok.com/oembed?url=https://www.tiktok.com/", "https://tiktok.com/")
+                   filter_chess = filter_tiktok.replace("https://api.chess.com/pub/player/", "https://www.chess.com/players")
+                   filter_roblox = filter_chess.replace(f"https://auth.roblox.com/v1/usernames/validate?username={username}&birthday=2019-12-31T23:00:00.000Z", f"https://www.roblox.com/search/users?keyword={username} \033[0m<[ \033[38;5;178mUsername Name Exist Or Account Deletion\033[0m ]>")
                    if e_string and e_string in text:
-                    display_url = urls.replace(username, f"\033[1;37m{username}\033[1;30m")
+                    display_url = filter_roblox.replace(username, f"\033[1;37m{username}\033[38;5;30m")
                     print(f"(\033[38;5;210m{pretty_name}\033[0m) [\033[38;2;0;199;124m{category}\033[0m] \033[38;5;183m{display_url}\033[0m")
                     found_urls.append(urls)
           except Exception:
@@ -125,7 +139,7 @@ if __name__ == "__main__":
  args = parser.parse_args()
 
  l = main("[\033[0;34mINF\033[0m] Instagram @leviguley " 
- "\n[\033[1;32mVERSION\033[0m] 0.1\n")
+ "\n[\033[1;32mVERSION\033[0m] 0.1\n[\033[38;5;141mTIP\033[0m] Ctrl \033[38;5;141m+ Left Click\033[0m On Links To Open\n")
  l.vers()
  try:
   asyncio.run(l.websites())
