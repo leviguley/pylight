@@ -1,4 +1,4 @@
-![screenshot](pylight.png)
+![screenshot](pylightv2.png)
 
 ```
 git clone https://github.com/leviguley/pylight
