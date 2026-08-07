@@ -59,7 +59,17 @@ USER_AGENTS = [
         "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.13 (KHTML, like Gecko) Chrome/24.0.1290.1 Safari/537.13"
     ]
 
-class main:
+class GoogleDork:
+   def __init__(self):
+      pass
+
+   def __enter__(self):
+      pass
+
+   def __exit__(self, exc_type, exc, tb):
+      pass
+
+class Light:
     def __init__(self, version) -> str:
         self.version = version
         self.ascii = r"""
@@ -128,7 +138,7 @@ if __name__ == "__main__":
  parser.add_argument("-l", "--limit", type=int, help="Request Limit", default=200)
  args = parser.parse_args()
 
- l = main("[\033[0;34mINF\033[0m] Instagram @leviguley " 
+ l = Light("[\033[0;34mINF\033[0m] Instagram @leviguley " 
  "\n[\033[1;32mVERSION\033[0m] 0.1\n[\033[38;5;141mTIP\033[0m] Ctrl \033[38;5;141m+ Left Click\033[0m On Links To Open\n")
  l.vers()
  try:
