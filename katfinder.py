@@ -5,14 +5,9 @@ import random
 import argparse
 from bs4 import BeautifulSoup
 from urllib.parse import unquote
-
-Duckduckgo_Header = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/151.0.0.0 Safari/537.36"
-        )
-    }
+from seleniumbase import sb_cdp
+from selenium import webdriver
+import time
 
 USER_AGENTS = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
@@ -73,31 +68,29 @@ class GoogleDork:
    def __init__(self, username):
       self.username = username
 
-   async def __aenter__(self):
-      self.session = aiohttp.ClientSession()
-      return self
+   def __enter__(self):
+     self.sb = sb_cdp.Chrome(incognito=False, headless=False)
+     self.sb.goto(f"https://www.google.com/search?q={self.username}+site%3Ainstagram.com+&sca_esv=35c26612a7d06f4b&rlz=1C1HKFL_enAU1220AU1220&sxsrf=APpeQnuUYf0uh02DHHqUi3_6v-F0sGARkg%3A1786201674465&ei=SkZ3aumIHJithvcPr8_ZgAw&biw=1920&bih=911&ved=0ahUKEwjp1bbip5GWAxWYluEIHa9nFsAQ4dUDCBA&uact=5&oq=sethnorthcott+site%3Ainstagram.com+&gs_lp=Egxnd3Mtd2l6LXNlcnAiIXNldGhub3J0aGNvdHQgc2l0ZTppbnN0YWdyYW0uY29tIEjFClAAWJMJcAB4AJABAJgBoAGgAe4EqgEDMC40uAEDyAEA-AEB-AECmAIAoAIAmAMAkgcAoAcwsgcAuAcAwgcAyAcAgAgB&sclient=gws-wiz-serp")
+     self.sb.sleep(1.5)
+     self.html = self.sb.get_page_source()
+     return self
 
-   async def __aexit__(self, exc_type, exc, tb):
-      await self.session.close()
+   def __exit__(self, exc_type, exc, tb):
+      self.sb.quit()
    
-async def main(username):
- async with GoogleDork(username) as gd:
-    query = f"site:instagram.com {gd.username}"
-    url = "https://html.duckduckgo.com/html/"
-    print("\033[0mSearched", f"[\033[38;5;159m{query}\033[0m]")
-    async with gd.session.get(url, params={"q":query}, headers=Duckduckgo_Header) as resp:
-      html = await resp.text()
-      soup = BeautifulSoup(html, "html.parser")
-      for dork_urls in soup.select(".result__a"):
-         href = dork_urls.get("href")
-         if href:
-            visble_Links = unquote(href)
-            clean = visble_Links.replace("//duckduckgo.com/l/?uddg=", "")
-            indicate = clean.replace("reel", "\033[38;5;30mreel\033[0m")
-            instagram = indicate.replace("https://www.instagram.com", "\033[38;5;30mhttps://\033[38;5;178mwww.instagram.com\033[38;5;240m")
-            print(instagram)
+def main(username):
+ with GoogleDork(username) as gd:
+    print("\033[0m Dorked ->", f"(\033[38;5;159m{gd.username}\033[0m)")  
+    soup = BeautifulSoup(gd.html, "html.parser") 
+    noDupe = set()
+    for links in soup.find_all("a"):
+       href = links.get("href")
+       if href and href.startswith("https://www.instagram.com"):
+          noDupe.add(href)
+    for oDuped in noDupe:
+       print(oDuped)
 
-class Light:
+class Katfinder:
     def __init__(self, version):
         self.version = version
         self.ascii = r"""
@@ -113,7 +106,7 @@ class Light:
 
     async def websites(self):
         async with aiohttp.ClientSession() as session:
-         async with session.get("https://github.com/leviguley/pylight/raw/refs/heads/main/katfinder.json") as response:
+         async with session.get("https://github.com/leviguley/katfinder/raw/refs/heads/main/katfinder.json") as response:
             html = await response.text(errors="ignore")
             websites = json.loads(html)
             urls = websites["sites"]
@@ -165,9 +158,9 @@ if __name__ == "__main__":
  parser.add_argument("-l", "--limit", type=int, help="Request Limit", default=200)
  args = parser.parse_args()
 
- asyncio.run(main(args.username))
+ main(args.username)
 
- l = Light("\033[0m[\033[38;5;33mINF\033[0m] Instagram @leviguley " 
+ l = Katfinder("\033[0m[\033[38;5;33mINF\033[0m] Instagram @leviguley " 
  "\n[\033[1;32mVERSION\033[0m] 0.1\n\033[48;2;211;69;69m\033[97m[TIP]\033[0m\033[0]\033[0m Ctrl \033[38;2;211;69;69m+ Left Click\033[0m On Links To Open\n\033[48;2;253;195;5m\033[30m[WRN]\033[0m Instagram links are just for checking what they commented on and stuff if they don't have a insta then its going to be random people\n")
  l.vers()
  try:
