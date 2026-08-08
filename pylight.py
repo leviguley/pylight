@@ -3,6 +3,16 @@ import asyncio
 import json
 import random
 import argparse
+from bs4 import BeautifulSoup
+from urllib.parse import unquote
+
+Duckduckgo_Header = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/151.0.0.0 Safari/537.36"
+        )
+    }
 
 USER_AGENTS = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
@@ -60,32 +70,48 @@ USER_AGENTS = [
     ]
 
 class GoogleDork:
-   def __init__(self):
-      pass
+   def __init__(self, username):
+      self.username = username
 
-   def __enter__(self):
-      pass
+   async def __aenter__(self):
+      self.session = aiohttp.ClientSession()
+      return self
 
-   def __exit__(self, exc_type, exc, tb):
-      pass
+   async def __aexit__(self, exc_type, exc, tb):
+      await self.session.close()
+   
+async def main(username):
+ async with GoogleDork(username) as gd:
+    query = f"site:instagram.com {gd.username}"
+    url = "https://html.duckduckgo.com/html/"
+    print("\033[0mSearched", f"[\033[38;5;159m{query}\033[0m]")
+    async with gd.session.get(url, params={"q":query}, headers=Duckduckgo_Header) as resp:
+      html = await resp.text()
+      soup = BeautifulSoup(html, "html.parser")
+      for dork_urls in soup.select(".result__a"):
+         href = dork_urls.get("href")
+         if href:
+            visble_Links = unquote(href)
+            clean = visble_Links.replace("//duckduckgo.com/l/?uddg=", "")
+            indicate = clean.replace("reel", "\033[38;5;30mreel\033[0m")
+            instagram = indicate.replace("https://www.instagram.com", "\033[38;5;30mhttps://\033[38;5;178mwww.instagram.com\033[38;5;240m")
+            print(instagram)
 
 class Light:
-    def __init__(self, version) -> str:
+    def __init__(self, version):
         self.version = version
         self.ascii = r"""
-                 __    _       __    __ 
-    ____  __  __/ /   (_)___ _/ /_  / /_
-   / __ \/ / / / /   / / __ `/ __ \/ __/
-  / /_/ / /_/ / /___/ / /_/ / / / / /_  
- / .___/\__, /_____/_/\__, /_/ /_/\__/  
-/_/    /____/        /____/
+   __        __  ____         __       
+  / /_____ _/ /_/ _(_)__  ___/ /__ ____
+ /  '_/ _ `/ __/ _/ / _ \/ _  / -_) __/
+/_/\_\\_,_/\__/_//_/_//_/\_,_/\__/_/   
 """
 
     def vers(self):
         print(self.ascii)
         print(self.version)
 
-    async def websites(self) -> str:
+    async def websites(self):
         async with aiohttp.ClientSession() as session:
          async with session.get("https://raw.githubusercontent.com/grimaceshake80/pylight/refs/heads/main/pylight.json") as response:
             html = await response.text(errors="ignore")
@@ -94,10 +120,11 @@ class Light:
             self.urls = urls
             
     async def setup(self, random_Agent, username, timeout_seconds, limit):
+        headers = {"User-Agent":random_Agent}
         print(f"[\033[48;5;218m\033[30m{random_Agent}\033[0m]")
         connecting_specs = aiohttp.TCPConnector(limit=limit, ssl=False)
         timeout = aiohttp.ClientTimeout(total=timeout_seconds)
-        async with aiohttp.ClientSession(connector=connecting_specs, timeout=timeout, headers={"User-Agent": random_Agent}) as new_session:  
+        async with aiohttp.ClientSession(connector=connecting_specs, timeout=timeout, headers=headers) as new_session:  
           
          found_urls = []
          async def search(sites):
@@ -113,9 +140,9 @@ class Light:
                    filter_twitter = urls.replace("https://api.x.com/i/users/username_available.json?username=", "https://x.com/")
                    filter_tiktok = filter_twitter.replace("https://www.tiktok.com/oembed?url=https://www.tiktok.com/", "https://tiktok.com/")
                    filter_chess = filter_tiktok.replace("https://api.chess.com/pub/player/", "https://www.chess.com/members/")
-                   filter_roblox = filter_chess.replace(f"https://auth.roblox.com/v1/usernames/validate?username={username}&birthday=2019-12-31T23:00:00.000Z", f"https://www.roblox.com/search/users?keyword={username} \033[0m<[ \033[38;5;178mUsername Name Exist Or Account Deletion\033[0m ]>")
+                   filter_roblox = filter_chess.replace(f"https://auth.roblox.com/v1/usernames/validate?username={username}&birthday=2019-12-31T23:00:00.000Z", f"https://www.roblox.com/search/users?keyword={username} \033[0m[\033[38;5;178mUsername name exists, but may have been deleted\033[0m]")
                    if e_string and e_string in text:
-                    display_url = filter_roblox.replace(username, f"\033[1;37m{username}\033[38;5;30m")
+                    display_url = filter_roblox.replace(username, f"\033[38;5;33m{username}\033[38;5;30m")
                     print(f"(\033[38;5;210m{pretty_name}\033[0m) [\033[38;2;0;199;124m{category}\033[0m] \033[38;5;183m{display_url}\033[0m")
                     found_urls.append(urls)
           except Exception:
@@ -138,8 +165,10 @@ if __name__ == "__main__":
  parser.add_argument("-l", "--limit", type=int, help="Request Limit", default=200)
  args = parser.parse_args()
 
- l = Light("[\033[0;34mINF\033[0m] Instagram @leviguley " 
- "\n[\033[1;32mVERSION\033[0m] 0.1\n[\033[38;5;141mTIP\033[0m] Ctrl \033[38;5;141m+ Left Click\033[0m On Links To Open\n")
+ asyncio.run(main(args.username))
+
+ l = Light("\033[0m[\033[38;5;33mINF\033[0m] Instagram @leviguley " 
+ "\n[\033[1;32mVERSION\033[0m] 0.1\n\033[48;2;211;69;69m\033[97m[TIP]\033[0m\033[0]\033[0m Ctrl \033[38;2;211;69;69m+ Left Click\033[0m On Links To Open\n\033[48;2;253;195;5m\033[30m[WRN]\033[0m Instagram links are just for checking what they commented on and stuff if they don't have a insta then its going to be random people\n")
  l.vers()
  try:
   asyncio.run(l.websites())
