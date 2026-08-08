@@ -113,7 +113,7 @@ class Light:
 
     async def websites(self):
         async with aiohttp.ClientSession() as session:
-         async with session.get("https://raw.githubusercontent.com/grimaceshake80/pylight/refs/heads/main/pylight.json") as response:
+         async with session.get("https://github.com/leviguley/pylight/raw/refs/heads/main/katfinder.json") as response:
             html = await response.text(errors="ignore")
             websites = json.loads(html)
             urls = websites["sites"]
