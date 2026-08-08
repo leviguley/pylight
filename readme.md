@@ -1,4 +1,4 @@
-![screenshot](pylight_showcase.png)
+![screenshot](.png)
 
 ```
 git clone https://github.com/leviguley/katfinder
