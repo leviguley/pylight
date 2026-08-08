@@ -1,11 +1,11 @@
 ![screenshot](pylight_showcase.png)
 
 ```
-git clone https://github.com/leviguley/pylight
+git clone https://github.com/leviguley/katfinder
 ```
 
 ```
-cd pylight
+cd katfinder
 ```
 
 ```
@@ -13,9 +13,9 @@ pip install -r install.txt
 ```
 
 ```
-python3 pylight.py -h
+python3 katfinder.py -h
 ```
 
 ```
-python3 pylight.py -u anyname
+python3 katfinder.py -u anyname
 ```
