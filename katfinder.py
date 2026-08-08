@@ -67,7 +67,7 @@ class GoogleDork:
       self.username = username
 
    def __enter__(self):
-     self.sb = sb_cdp.Chrome(incognito=False, headless=False)
+     self.sb = sb_cdp.Chrome(incognito=False, headless=True)
      self.sb.goto(f"https://www.google.com/search?q={self.username}+site%3Ainstagram.com+&sca_esv=35c26612a7d06f4b&rlz=1C1HKFL_enAU1220AU1220&sxsrf=APpeQnuUYf0uh02DHHqUi3_6v-F0sGARkg%3A1786201674465&ei=SkZ3aumIHJithvcPr8_ZgAw&biw=1920&bih=911&ved=0ahUKEwjp1bbip5GWAxWYluEIHa9nFsAQ4dUDCBA&uact=5&oq=sethnorthcott+site%3Ainstagram.com+&gs_lp=Egxnd3Mtd2l6LXNlcnAiIXNldGhub3J0aGNvdHQgc2l0ZTppbnN0YWdyYW0uY29tIEjFClAAWJMJcAB4AJABAJgBoAGgAe4EqgEDMC40uAEDyAEA-AEB-AECmAIAoAIAmAMAkgcAoAcwsgcAuAcAwgcAyAcAgAgB&sclient=gws-wiz-serp")
      self.sb.sleep(1.5)
      self.html = self.sb.get_page_source()
