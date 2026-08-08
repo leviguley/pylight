@@ -85,9 +85,13 @@ def main(username):
        href = links.get("href")
        if href and href.startswith("https://www.instagram.com"):
           noDupe.add(href)
-    for oDuped in noDupe:
-       print(oDuped)
 
+    for oDuped in noDupe:
+       if oDuped and oDuped.startswith("https://www.instagram.com/p/"):
+        print(f"\033[38;5;238m{oDuped}\033[38;5;194m[PHOTOS]\033[0m")
+       if oDuped and oDuped.startswith("https://www.instagram.com/reel/"):
+          print(f"\033[38;5;238m{oDuped}\033[38;5;214m[REELS]\033[0m")
+       
 class Katfinder:
     def __init__(self, version):
         self.version = version
